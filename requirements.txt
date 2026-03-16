@@ -6,5 +6,3 @@ textblob
 pandas
 streamlit
 watchdog
-
-# python manage.py run
