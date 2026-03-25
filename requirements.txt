@@ -1,2 +1,9 @@
-# python manage.py run
+streamlit
+pymongo
+neo4j
+matplotlib
+pandas
 pyvis
+textblob
+faker
+python-dotenv

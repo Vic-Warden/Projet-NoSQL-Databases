@@ -1,10 +1,10 @@
-# Deployment for the Streamlit app
+# Deployment for the Streamlit app with seeding step
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: milano-app-deployment
 spec:
-  replicas: 1 
+  replicas: 1
   selector:
     matchLabels:
       app: milano-app
@@ -13,24 +13,24 @@ spec:
       labels:
         app: milano-app
     spec:
-      
-      # Run seeder before starting the app
+      # Seeder: runs main.py, must finish before Streamlit starts
       initContainers:
       - name: seeder
         image: warden1983/milano-app:latest
         imagePullPolicy: Never
-        command: ["streamlit", "run", "app.py"]
+        command: ["python", "main.py"]
         env:
         - name: MONGO_URI
           value: "mongodb://mongo-service:27017"
         - name: NEO4J_URI
           value: "bolt://neo4j-service:7687"
-      
-      # Main app container
+
+      # Main app: runs Streamlit only after seeder is done
       containers:
       - name: streamlit
         image: warden1983/milano-app:latest
         imagePullPolicy: Never
+        command: ["streamlit", "run", "app.py", "--server.address=0.0.0.0"]
         ports:
         - containerPort: 8501
         env:
@@ -40,7 +40,6 @@ spec:
           value: "bolt://neo4j-service:7687"
 
 ---
-
 # Expose the app externally
 apiVersion: v1
 kind: Service

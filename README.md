@@ -27,6 +27,9 @@ minikube start
 # Deploy all services
 kubectl apply -f k8s/
 
+# Wait for pods to be ready
+kubectl get pods -w
+
 # Open the app in browser
 minikube service milano-app-service
 ```
