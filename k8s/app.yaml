@@ -19,7 +19,7 @@ spec:
       - name: seeder
         image: warden1983/milano-app:latest
         imagePullPolicy: Never
-        command: ["python", "main.py"]
+        command: ["streamlit", "run", "app.py"]
         env:
         - name: MONGO_URI
           value: "mongodb://mongo-service:27017"
